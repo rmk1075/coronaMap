@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Corona Map Ex</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <!-- callback -> execute initMap function -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmVnIOsg37a2A31OqbtYrbqadG8y60Dq4&callback=initMap"
+        async defer></script>
+    <script src="./data/data.js"></script>
+    <script>
+        var map;
+        function initMap() {
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: { lat: 37.555149, lng: 126.970698 } // seoul station
+            });
+
+            window.corona.data.virusInfo.forEach(function(element) {
+                var loc = {lat: element.location.lat, lng: element.location.lng};
+                var marker = new google.maps.Marker({
+                    position: loc,
+                    map: map,
+                    title: (element.idx+1) + '번 확진자, ' + element.age + '세, ',
+                    label: (element.idx+1).toString()
+                });
+            });
+        }
+
+    </script>
+</body>
+
+</html>
