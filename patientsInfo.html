@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>확진자 정보</title>
+        <!-- jquery -->
+        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmVnIOsg37a2A31OqbtYrbqadG8y60Dq4&callback=initMap" async
+            defer></script>
+            <!-- CORS error 문제 때문에 json을 js 파일로 읽어옴 -->
+        <script src="crawling/patientsInfo.js"></script>
+    </head>
+    <body>
+        <script>
+            for(p in patientsInfo) {
+                // { "idx": "60", "age": "40", "gender": "여성", "address": "송정동" }
+                document.write(patientsInfo[p]["idx"] + "번째 확진자: ");
+                document.write(patientsInfo[p]["age"] + "대 ");
+                document.write(patientsInfo[p]["gender"]);
+                document.write(", " + patientsInfo[p]["address"]);
+                document.write("<br>");
+            }
+        </script>
+    </body>
+</html>
