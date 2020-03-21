@@ -1,24 +1,65 @@
 <html>
     <head>
         <title>확진자 정보</title>
+
+        <style>
+            #list {
+                width: auto;
+                height: 100%;
+                float: left;
+            }
+
+            #map {
+                width: auto;
+                height: 100%;
+            }
+
+            /* Optional: Makes the sample page fill the window. */
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+
         <!-- jquery -->
-        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-            crossorigin="anonymous"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmVnIOsg37a2A31OqbtYrbqadG8y60Dq4&callback=initMap" async
-            defer></script>
-            <!-- CORS error 문제 때문에 json을 js 파일로 읽어옴 -->
+        <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="crossorigin="anonymous"></script>
+        <!-- map API -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmVnIOsg37a2A31OqbtYrbqadG8y60Dq4&callback=initMap" async defer></script>
+        <!-- CORS error 문제 때문에 json을 js 파일로 읽어옴 -->
         <script src="crawling/patientsInfo.js"></script>
     </head>
     <body>
+        <div id="list"></div>
+        <div id="map"></div>
+
         <script>
-            for(p in patientsInfo) {
-                // { "idx": "60", "age": "40", "gender": "여성", "address": "송정동" }
-                document.write(patientsInfo[p]["idx"] + "번째 확진자: ");
-                document.write(patientsInfo[p]["age"] + "대 ");
-                document.write(patientsInfo[p]["gender"]);
-                document.write(", " + patientsInfo[p]["address"]);
-                document.write("<br>");
+            var list = function(data) {
+                for(p in data) {
+                    // { "idx": "60", "age": "40", "gender": "여성", "address": "송정동" }
+                    document.getElementById('list').innerHTML += patientsInfo[p]["idx"] + "번째 확진자: " + patientsInfo[p]["age"] + "대 " + patientsInfo[p]["gender"] + ", " + patientsInfo[p]["address"] + "<br>";
+                }
             }
+            list(patientsInfo);
+        
+            function initMap() {
+
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 15,
+                    center: { lat: 36.1195, lng: 128.3446 } // gumi city
+                });
+
+                patientsInfo.forEach(function(element) {
+                    var loc = {lat: parseFloat(element.lat), lng: parseFloat(element.lng)};
+                    var marker = new google.maps.Marker({
+                        position: loc,
+                        map: map,
+                        title: element.idx + '번 확진자, ' + element.age + '대, ' + element.gender + ', ' + element.address,
+                        label: (element.idx).toString()
+                    });
+                });
+            }
+
         </script>
     </body>
 </html>
