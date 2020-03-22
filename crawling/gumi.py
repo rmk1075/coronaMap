@@ -87,19 +87,12 @@ for i in range(0, len(patientsInfo)):
 
 # print(patientsInfoDictList)
 
-## TODO: 최적화 필요!! - json, js 파일 생성 과정 한번에
-## json 파일
 import json
 
-with open("patientsInfo.json", "w", encoding='UTF-8') as json_file:
-    json.dump(patientsInfoDictList, json_file, ensure_ascii=False)
-
-## js 파일
+## js 파일 - patientsInfo
 f = open("patientsInfo.js", "w", encoding="UTF-8")
 f.write('patientsInfo = ')
-with open("patientsInfo.json", "r", encoding="UTF-8") as jsonFile:
-    for line in jsonFile.readlines():
-        f.write(line)
+json.dump(patientsInfoDictList, f, ensure_ascii=False)
 
 
 # 행정구역
