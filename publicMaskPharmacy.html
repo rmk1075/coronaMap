@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>확진자 정보</title>
+        <title>공적 마스크 판매처</title>
 
         <style>
             #list {
@@ -24,42 +24,47 @@
 
         <!-- jquery -->
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="crossorigin="anonymous"></script>
-        <!-- map API -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmVnIOsg37a2A31OqbtYrbqadG8y60Dq4&callback=initMap" async defer ></script >
         <!-- CORS error 문제 때문에 json을 js 파일로 읽어옴 -->
-        <script src="crawling/patientsInfo.js"></script>
+        <script src="crawling/pharmacyLoc.js"></script>
     </head>
     <body>
         <div id="list"></div>
         <div id="map"></div>
-
+        
         <script>
             var list = function(data) {
                 for(p in data) {
                     // { "idx": "60", "age": "40", "gender": "여성", "address": "송정동" }
-                    document.getElementById('list').innerHTML += data[p]["idx"] + "번째 확진자: " + data[p]["age"] + "대 " + data[p]["gender"] + ", " + data[p]["address"] + "<br>";
+                    document.getElementById('list').innerHTML += data[p]['name'];
+                    if(data[p]['type'] == '01') document.getElementById('list').innerHTML += ', 약국';
+                    else if(data[p]['type'] == '02') document.getElementById('list').innerHTML += ', 우체국';
+                    else document.getElementById('list').innerHTML += ', 농협';
+                    document.getElementById('list').innerHTML += '<br>';
                 }
             }
-            list(patientsInfo);
-        
+            list(pharmacyLoc);
+            
             function initMap() {
-
+                
                 var map = new google.maps.Map(document.getElementById('map'), {
                     zoom: 15,
                     center: { lat: 36.1195, lng: 128.3446 } // gumi city
                 });
-
-                patientsInfo.forEach(function(element) {
+                
+                pharmacyLoc.forEach(function(element) {
                     var loc = {lat: parseFloat(element.lat), lng: parseFloat(element.lng)};
                     var marker = new google.maps.Marker({
                         position: loc,
                         map: map,
-                        title: element.idx + '번 확진자, ' + element.age + '대, ' + element.gender + ', ' + element.address,
-                        label: (element.idx).toString()
+                        title: element.name,
+                        label: (element.name).toString()
                     });
                 });
             }
-
-        </script>
+            
+            </script>
+            
+            <!-- map API -->
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmVnIOsg37a2A31OqbtYrbqadG8y60Dq4&callback=initMap" async defer></script >
     </body>
-</html>
+    </html>

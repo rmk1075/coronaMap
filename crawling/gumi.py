@@ -30,7 +30,7 @@ driver = webdriver.Chrome('./chromedriver/chromedriver', chrome_options=chrome_o
 gumi = "http://www.gumi.go.kr/"
 driver.get(gumi)
 
-## 지역 정보
+## 지역 별 정보 - 전국, 경상북도, 구미시
 # statusList = driver.find_elements_by_class_name("row status pohang")
 # for status in statusList:
 #     print(status.text)
@@ -67,30 +67,40 @@ for i in range(0, len(patientsInfo)):
     tempDict['lat'] = location.select("location > lat")[0].get_text()
     tempDict['lng'] = location.select("location > lng")[0].get_text()
 
-    # TODO:
-    # print(tempDict['address'])
-    # print(location.select("location > lat")[0].get_text())
-    # print(location.select("location > lng")[0].get_text())
-
+    # pRoute 변환
     pRoute = patientsRoute[i].text.strip().split("\n")
-    # for j in range(1, len(pRoute)):
-    #     if pRoute[j] == "":
-    #         continue
-    #     print(pRoute[j])
-    # print('--------------------------')
+
+    print(tempDict['idx'] + '번째 확진자')
+    for j in range(1, len(pRoute)):
+        if pRoute[j] == "":
+            continue
+        # print(pRoute[j])
+
+        if 3 <= len(pRoute[j].split('.')):
+            tmp = pRoute[j].split(')')
+            print(tmp[0] + ')')
+            print(tmp[1])
+        else:
+            print(pRoute[j])
+
+    print('--------------------------')
 
 # print(patientsInfoDictList)
 
-## 최적화 필요!! - json, js 파일 생성 과정 한번에
-# json 파일
+## TODO: 최적화 필요!! - json, js 파일 생성 과정 한번에
+## json 파일
 import json
 
 with open("patientsInfo.json", "w", encoding='UTF-8') as json_file:
     json.dump(patientsInfoDictList, json_file, ensure_ascii=False)
 
-# js 파일
+## js 파일
 f = open("patientsInfo.js", "w", encoding="UTF-8")
 f.write('patientsInfo = ')
 with open("patientsInfo.json", "r", encoding="UTF-8") as jsonFile:
     for line in jsonFile.readlines():
         f.write(line)
+
+
+# 행정구역
+# 선산읍, 고아읍, 무을면, 옥성면, 도개면, 해평면, 산동면, 장천면, 송정동, 원평1동, 원평2동, 지산동, 도량동, 선주원남, 형곡1동, 형곡2동, 신평1동, 신평2동, 비산동, 공단1동, 공단2동, 광평동, 상모사곡, 임오동, 인동동, 진미동, 양포동
