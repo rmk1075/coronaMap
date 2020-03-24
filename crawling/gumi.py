@@ -44,7 +44,7 @@ soup = BeautifulSoup(html, 'html.parser')
 patientsInfo = soup.select('div#sub_cont02 > h4')
 
 ## 환자 이동 경로
-patientsRoute = soup.select('table.tbl_st1')
+patientsRoute = soup.select('table.tbl_st1 > tbody')
 
 patientsInfoDictList = list()
 # paritentsRouteDict = dict()
@@ -68,32 +68,33 @@ for i in range(0, len(patientsInfo)):
     tempDict['lng'] = location.select("location > lng")[0].get_text()
 
     # pRoute 변환
-    pRoute = patientsRoute[i].text.strip().split("\n")
+    # print(patientsRoute[i])
+
+    import re
+    pattern = '<th .+>.+</th>'
+    pRouteDate = re.findall(pattern, (str)(patientsRoute[i]).strip())
+    pRoute = re.split(pattern, (str)(patientsRoute[i]).strip())
 
     print(tempDict['idx'] + '번째 확진자')
+    # print(pRoute)
+
     for j in range(1, len(pRoute)):
-        if pRoute[j] == "":
+        print(BeautifulSoup(pRouteDate[j-1], 'html.parser').text)
+        if pRoute[j].strip() == "":
             continue
-        # print(pRoute[j])
 
-        if 3 <= len(pRoute[j].split('.')):
-            tmp = pRoute[j].split(')')
-            print(tmp[0] + ')')
-            print(tmp[1])
-        else:
-            print(pRoute[j])
-
+        print(BeautifulSoup(pRoute[j], 'html.parser').text)
     print('--------------------------')
 
 # print(patientsInfoDictList)
 
 import json
-
+'''
 ## js 파일 - patientsInfo
 f = open("patientsInfo.js", "w", encoding="UTF-8")
 f.write('patientsInfo = ')
 json.dump(patientsInfoDictList, f, ensure_ascii=False)
-
+'''
 
 # 행정구역
 # 선산읍, 고아읍, 무을면, 옥성면, 도개면, 해평면, 산동면, 장천면, 송정동, 원평1동, 원평2동, 지산동, 도량동, 선주원남, 형곡1동, 형곡2동, 신평1동, 신평2동, 비산동, 공단1동, 공단2동, 광평동, 상모사곡, 임오동, 인동동, 진미동, 양포동
