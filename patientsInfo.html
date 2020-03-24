@@ -24,10 +24,10 @@
 
         <!-- jquery -->
         <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="crossorigin="anonymous"></script>
-        <!-- map API -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmVnIOsg37a2A31OqbtYrbqadG8y60Dq4&callback=initMap" async defer ></script >
+
         <!-- CORS error 문제 때문에 json을 js 파일로 읽어옴 -->
         <script src="crawling/patientsInfo.js"></script>
+        <script src="crawling/patientsRoute.js"></script>
     </head>
     <body>
         <div id="list"></div>
@@ -50,6 +50,7 @@
                 });
 
                 patientsInfo.forEach(function(element) {
+                    
                     var loc = {lat: parseFloat(element.lat), lng: parseFloat(element.lng)};
                     var marker = new google.maps.Marker({
                         position: loc,
@@ -57,9 +58,30 @@
                         title: element.idx + '번 확진자, ' + element.age + '대, ' + element.gender + ', ' + element.address,
                         label: (element.idx).toString()
                     });
+                    
+                    var contents = '';
+                    for(var idx in patientsRoute) {
+                        if(patientsRoute[idx]['index'] != element.idx) continue;
+                        contents += patientsRoute[idx]['index'] + '번 확진자<br>';
+                        for(var idx2 in patientsRoute[idx]['list']) {
+                            contents += patientsRoute[idx]['list'][idx2]['date'] + ': ' + patientsRoute[idx]['list'][idx2]['route'] + '<br>';
+                        }
+                        break;
+                    }
+
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contents
+                    });
+
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
+                    });
+
                 });
             }
 
         </script>
+        <!-- map API -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmVnIOsg37a2A31OqbtYrbqadG8y60Dq4&callback=initMap" async defer></script>
     </body>
 </html>

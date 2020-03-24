@@ -75,7 +75,7 @@ for i in range(0, len(patientsInfo)):
         if pRoute[j].strip() == "":
             continue
 
-        tempDictListDict['Route'] = BeautifulSoup(pRoute[j], 'html.parser').text
+        tempDictListDict['route'] = BeautifulSoup(pRoute[j], 'html.parser').text
         tempDict['list'].append(tempDictListDict)
 
     patientsRouteDictList.append(tempDict)
