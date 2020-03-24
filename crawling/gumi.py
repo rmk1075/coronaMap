@@ -18,6 +18,8 @@
 
 #-*- coding:utf-8 -*-
 import requests
+from patientDict import patientInfo
+# from patientDict import patientRoute
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
@@ -52,23 +54,9 @@ for i in range(0, len(patientsInfo)):
     pInfo = patientsInfo[i].text
     if not pInfo[0].isdigit():
         continue
-
-    # pInfo 변환 - idx, age, gender, address - 집주소
-    tempDict = dict()
-    tempDict['idx'] = pInfo.split('번째')[0]
-    tempDict['age'] = pInfo.split('(')[1].split('대')[0]
-    tempDict['gender'] = pInfo.split('/')[1]
-    tempDict['address'] = pInfo.split('/')[2].strip(')').strip()
-
-    # geocoding
-    url = "https://maps.googleapis.com/maps/api/geocode/xml?address=구미시 " + tempDict['address'] + "&key=AIzaSyAmVnIOsg37a2A31OqbtYrbqadG8y60Dq4"
-    location = BeautifulSoup(requests.get(url).text, "lxml")
-    tempDict['lat'] = location.select("location > lat")[0].get_text()
-    tempDict['lng'] = location.select("location > lng")[0].get_text()
-
-    patientsInfoDictList.append(tempDict)
-
-    ######################################################
+    
+    # pInfo 변환
+    patientsInfoDictList.append(patientInfo(pInfo))
 
     # pRoute 변환
     import re
@@ -76,18 +64,21 @@ for i in range(0, len(patientsInfo)):
     pRouteDate = re.findall(pattern, (str)(patientsRoute[i]).strip())
     pRoute = re.split(pattern, (str)(patientsRoute[i]).strip())
 
+    tempDict = dict()
+    tempDict['index'] = pInfo.split('번째')[0]
+    tempDict['list'] = list()
     for j in range(1, len(pRoute)):
-        tempDict = dict()
-        tempDict['date'] = BeautifulSoup(pRouteDate[j-1], 'html.parser').text
-        # print(BeautifulSoup(pRouteDate[j-1], 'html.parser').text)
+        tempDictListDict = dict()
+        tempDictListDict['date'] = BeautifulSoup(
+            pRouteDate[j-1], 'html.parser').text
 
         if pRoute[j].strip() == "":
             continue
 
-        tempDict['Route'] = BeautifulSoup(pRoute[j], 'html.parser').text
-        # print(BeautifulSoup(pRoute[j], 'html.parser').text)
+        tempDictListDict['Route'] = BeautifulSoup(pRoute[j], 'html.parser').text
+        tempDict['list'].append(tempDictListDict)
 
-        patientsRouteDictList.append(tempDict)
+    patientsRouteDictList.append(tempDict)
 
 # print(patientsInfoDictList)
 
