@@ -28,9 +28,28 @@
         <!-- CORS error 문제 때문에 json을 js 파일로 읽어옴 -->
         <script src="crawling/patientsInfo.js"></script>
         <script src="crawling/patientsRoute.js"></script>
+        <script>
+            function hide_nav() {
+                document.getElementById("list").style.display = "none";
+                document.getElementById("visible_nav").style.display = "";
+            }
+
+            function visible_nav() {
+                document.getElementById("list").style.display = "";
+                document.getElementById("visible_nav").style.display = "none";
+            }
+        </script>
     </head>
     <body>
-        <div id="list"></div>
+        <!-- banner -->
+        <header id="banner" style="height: 100px; background-color: beige;">
+            banner
+        </header>
+        
+        <nav id="list">
+            <button id="hide_nav" onclick="hide_nav();">hide</button><br>
+        </nav>
+        <button id="visible_nav" onclick="visible_nav()" style="display: none; z-index: 1;">visible</button>
         <div id="map"></div>
 
         <script>
