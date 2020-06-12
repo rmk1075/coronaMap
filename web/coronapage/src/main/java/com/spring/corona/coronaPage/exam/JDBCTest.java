@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.spring.corona.coronaPage.PatientsInfoDAO;
 import com.spring.corona.coronaPage.config.ApplicationConfig;
+import com.spring.corona.coronaPage.dao.PatientsInfoDAO;
 import com.spring.corona.coronaPage.dto.PatientsInfoDTO;
 
 public class JDBCTest {

@@ -1,4 +1,4 @@
-package com.spring.corona.coronaPage;
+package com.spring.corona.coronaPage.dao;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +26,7 @@ public class PatientsInfoDAO {
 	private String tableName = "patientsInfo";
 	
 	// sql query
-	private static final String SELECT_ALL = "SELECT * FROM PATIENTSINFO";
+	private static final String SELECT_ALL = "SELECT * FROM PATIENTSINFO ORDER BY IDX";
 	private static final String UPDATE = "UPDATE PATIENTSINFO SET ADDRESS = :address WHERE IDX = :idx";
 	private static final String SELECT_BY_IDX = "SELECT * FROM PATIENTSINFO WHERE IDX = :idx";
 	private static final String DELETE_BY_IDX = "DELETE FROM PATIENTSINFO WHERE IDX = :idx";

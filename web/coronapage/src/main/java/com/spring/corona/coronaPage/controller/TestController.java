@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.corona.coronaPage.dto.UserTest;
 
-@Controller
+// @Controller
 public class TestController {
 	
 	/**

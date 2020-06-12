@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@ComponentScan(basePackages = {"com.spring.corona.coronaPage"})
+@ComponentScan(basePackages = {"com.spring.corona.coronaPage.dao", "com.spring.corona.coronaPage.service"})
 @Import({DBConfig.class})
 public class ApplicationConfig {
 	
